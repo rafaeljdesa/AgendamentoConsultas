@@ -63,6 +63,34 @@ public class ConsultaDAO {
         }
 	}
 	
+	public Consulta buscaconsultaPorId(int id) {
+		Consulta consulta = new Consulta();
+		 try {
+	            PreparedStatement preparedStatement = (PreparedStatement) conexao.prepareStatement("select * from consulta where id=?");
+	            preparedStatement.setInt(1, id);
+	            ResultSet rs = preparedStatement.executeQuery();
+
+	            if (rs.next()) {
+	            	consulta.setId(rs.getInt("id"));
+	            	consulta.setData(rs.getDate("data"));
+	            	MedicoDAO medicoDAO = new MedicoDAO();
+	        		Medico medico = new Medico();
+	        		medico = medicoDAO.buscaMedicoPorId(rs.getInt("id_medico"));                
+	                consulta.setMedico(medico);	        		
+	        		PacienteDAO pacienteDAO = new PacienteDAO();
+	        		Paciente paciente = new Paciente(); 
+	        		paciente = pacienteDAO.buscaPacientePorId(rs.getInt("id_paciente"));
+	                consulta.setPaciente(paciente);
+	         
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+		
+		return consulta;
+	}
+	
 	public List<Consulta> listaConsultas(){
 		List<Consulta> consultas = new ArrayList<Consulta>();
 		MedicoDAO medicoDAO = new MedicoDAO();
