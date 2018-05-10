@@ -10,23 +10,30 @@
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	</head>
 	<body>
-		
+				
    		<div class="container">
+   			
+   			<h2 class="text-center mb-5">Agendamento de consultas</h2>	
 		
 			<form method="post" action="ConsultaController" name="formConsulta">
 			  <div class="form-group">
+			  	
 			  	<div class="row">
-			  		<div class="col-4">
+			  		<div class="col-3">
+			  			<label for="id">Id consulta</label>
+				    	<input type="text" readonly="readonly" class="form-control" id="id" name="id" value="<c:out value="${consulta.id}" />">
+			  		</div>
+			  		<div class="col-3">
 			  			<label for="medico">Médico</label>
-				    	<input type="text" class="form-control" id="medico" placeholder="Medico" value="<c:out value="${consulta.medico}" />">
+				    	<input type="text" class="form-control" id="medico" placeholder="Medico" name="id_medico" value="<c:out value="${consulta.medico}" />">
 			  		</div>
-			  		<div class="col-4">
+			  		<div class="col-3">
 			  			 <label for="paciente">Paciente</label>
-				    	<input type="text" class="form-control" id="paciente" placeholder="Paciente" value="<c:out value="${consulta.paciente}" />">	
+				    	<input type="text" class="form-control" id="paciente" placeholder="Paciente" name="id_paciente" value="<c:out value="${consulta.paciente}" />">	
 			  		</div>
-			  		<div class="col-4">
+			  		<div class="col-3">
 			  			<label for="data">Data</label>
-				    	<input type="text" class="form-control" id="data" value="<fmt:formatDate pattern="dd/MM/yyyy" value="${consulta.data}" />" />
+				    	<input type="text" class="form-control" id="data" placeholder="Data" name="data" value="<fmt:formatDate pattern="dd/MM/yyyy" value="${consulta.data}" />" />
 			  		</div>
 			  	</div>
 			  </div>
@@ -36,6 +43,12 @@
 			  	</div>
 			  	
 			  </div>	
+			  <div class="row mt-2">
+			  	<div class="col-12">
+			  		<p><a href="ConsultaController?action=listaConsultas">Visualizar agenda</a></p>  		
+			  	</div>
+			  	
+			  </div>
 			</form>
 		</div>
 		

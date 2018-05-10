@@ -69,10 +69,10 @@ public class ConsultaController extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		consulta = new Consulta();
-		consulta.setId(Integer.parseInt(request.getParameter("id")));
+//		consulta.setId(Integer.parseInt(request.getParameter("id")));
 		
 		try {
-			Date data = new SimpleDateFormat("MM/dd/yyyy").parse(request.getParameter("data"));
+			Date data = (Date) new SimpleDateFormat("MM/dd/yyyy").parse(request.getParameter("data"));
 			consulta.setData(data);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,6 +94,7 @@ public class ConsultaController extends HttpServlet {
 		if(request.getParameter("id") == ""){
 			consultaDAO.adicionaConsulta(consulta, medico, paciente);
 		}else {
+			consulta.setId(Integer.parseInt(request.getParameter("id")));
 			consultaDAO.atualizaConsulta(consulta, medico, paciente);
 		}
 		

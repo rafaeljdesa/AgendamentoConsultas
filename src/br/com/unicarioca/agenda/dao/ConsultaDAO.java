@@ -1,16 +1,15 @@
 package br.com.unicarioca.agenda.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.api.jdbc.Statement;
-import com.mysql.cj.jdbc.PreparedStatement;
-
 import br.com.unicarioca.agenda.model.Consulta;
+import br.com.unicarioca.agenda.model.Convenio;
 import br.com.unicarioca.agenda.model.Medico;
 import br.com.unicarioca.agenda.model.Paciente;
 import br.com.unicarioca.agenda.util.DbUtil;
@@ -28,7 +27,9 @@ public class ConsultaDAO {
             // Parameters start with 1
             preparedStatement.setInt(1, medico.getId());
             preparedStatement.setInt(2, paciente.getId());
-            preparedStatement.setDate(3, (Date) (consulta.getData()));
+            java.util.Date data = consulta.getData();
+            java.sql.Date d = new java.sql.Date(data.getTime());
+            preparedStatement.setDate(3, d);
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -54,8 +55,10 @@ public class ConsultaDAO {
             // Parameters start with 1
             preparedStatement.setInt(1, medico.getId());
             preparedStatement.setInt(2, paciente.getId());
-            preparedStatement.setDate(3, (Date) consulta.getData());
-            preparedStatement.setInt(5, consulta.getId());
+            java.util.Date data = consulta.getData();
+            java.sql.Date d = new java.sql.Date(data.getTime());
+            preparedStatement.setDate(3, d);
+            preparedStatement.setInt(4, consulta.getId());
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -97,6 +100,8 @@ public class ConsultaDAO {
 		Medico medico = new Medico();
 		PacienteDAO pacienteDAO = new PacienteDAO();
 		Paciente paciente = new Paciente(); 
+		Convenio convenio = new Convenio();
+		ConvenioDAO convenioDAO = new ConvenioDAO();
 		
 		try {
             Statement statement = (Statement) conexao.createStatement();
@@ -107,6 +112,7 @@ public class ConsultaDAO {
                 medico = medicoDAO.buscaMedicoPorId(rs.getInt("id_medico"));                
                 consulta.setMedico(medico);
                 paciente = pacienteDAO.buscaPacientePorId(rs.getInt("id_paciente"));
+                paciente.setConvenio(convenioDAO.buscaConvenioPorPaciente(paciente));
                 consulta.setPaciente(paciente);
                 consulta.setData(rs.getDate("data"));
                 consultas.add(consulta);
