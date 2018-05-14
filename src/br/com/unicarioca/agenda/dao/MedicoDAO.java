@@ -3,6 +3,9 @@ package br.com.unicarioca.agenda.dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mysql.cj.jdbc.PreparedStatement;
 
@@ -36,5 +39,26 @@ public class MedicoDAO {
 
 		
 		return medico;
+	}
+	
+	public List<Medico> listaMedicos(){
+		List<Medico> medicos = new ArrayList<Medico>();
+		
+		try {
+            Statement statement = (Statement) conexao.createStatement();
+            ResultSet rs = statement.executeQuery("select * from medico");
+            while (rs.next()) {
+                Medico medico = new Medico();
+                medico.setId(rs.getInt("id")); 
+                medico.setNome(rs.getString("nome"));
+                medico.setCrm(rs.getString("crm"));     
+                medico.setEspecialidade(rs.getString("especialidade"));                               
+                medicos.add(medico);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return medicos;
 	}
 }

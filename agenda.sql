@@ -26,13 +26,13 @@ CREATE TABLE `consulta` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_medico` int(11) NOT NULL,
   `id_paciente` int(11) NOT NULL,
-  `data` datetime NOT NULL,
+  `data` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_paciente` (`id_paciente`),
   KEY `id_medico` (`id_medico`),
   CONSTRAINT `id_medico` FOREIGN KEY (`id_medico`) REFERENCES `medico` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `id_paciente` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,6 @@ CREATE TABLE `consulta` (
 
 LOCK TABLES `consulta` WRITE;
 /*!40000 ALTER TABLE `consulta` DISABLE KEYS */;
-INSERT INTO `consulta` VALUES (8,1,1,'2018-05-31 00:00:00'),(9,1,2,'2018-05-28 00:00:00'),(10,2,2,'2018-05-23 00:00:00');
 /*!40000 ALTER TABLE `consulta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,7 +58,7 @@ CREATE TABLE `convenio` (
   PRIMARY KEY (`id`),
   KEY `id_paciente_fk_02` (`id_paciente`),
   CONSTRAINT `id_paciente_fk_02` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +67,7 @@ CREATE TABLE `convenio` (
 
 LOCK TABLES `convenio` WRITE;
 /*!40000 ALTER TABLE `convenio` DISABLE KEYS */;
-INSERT INTO `convenio` VALUES (1,'AMIL',1),(2,'SULAMERICA',2);
+INSERT INTO `convenio` VALUES (1,'AMIL',1),(2,'SULAMERICA',2),(3,'APPAI',3);
 /*!40000 ALTER TABLE `convenio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,7 +84,7 @@ CREATE TABLE `medico` (
   `crm` varchar(255) NOT NULL,
   `especialidade` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +93,7 @@ CREATE TABLE `medico` (
 
 LOCK TABLES `medico` WRITE;
 /*!40000 ALTER TABLE `medico` DISABLE KEYS */;
-INSERT INTO `medico` VALUES (1,'MEDICO 1','152364456','DERMATOLOGIA'),(2,'MEDICO 2','125468844','OFTAMOLOGIA');
+INSERT INTO `medico` VALUES (1,'MEDICO 1','52-72578-8','DERMATOLOGIA'),(2,'MEDICO 2','52-65985-9','OFTAMOLOGIA'),(3,'MEDICO 3','52-45698-2','ORTOPEDIA');
 /*!40000 ALTER TABLE `medico` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,7 +109,7 @@ CREATE TABLE `paciente` (
   `nome` varchar(255) NOT NULL,
   `cpf` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +118,7 @@ CREATE TABLE `paciente` (
 
 LOCK TABLES `paciente` WRITE;
 /*!40000 ALTER TABLE `paciente` DISABLE KEYS */;
-INSERT INTO `paciente` VALUES (1,'PACIENTE 1','15236548475'),(2,'PACIENTE 2','12456587858');
+INSERT INTO `paciente` VALUES (1,'PACIENTE 1','152.365.484-75'),(2,'PACIENTE 2','124.565.878-58'),(3,'PACIENTE 3','152.212.565-87');
 /*!40000 ALTER TABLE `paciente` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -132,4 +131,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-10  0:40:02
+-- Dump completed on 2018-05-14  9:52:23

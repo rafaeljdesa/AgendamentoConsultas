@@ -25,7 +25,7 @@
 								<th>Paciente</th>
 								<th>CPF</th>
 								<th>Convênio</th>
-								<th>Data</th>
+								<th>Data e hora</th>
 								<th colspan=2>Ação</th>
 							</tr>
 						</thead>
@@ -38,7 +38,7 @@
 									<td><c:out value="${consulta.paciente.nome }" /></td>
 									<td><c:out value="${consulta.paciente.cpf }" /></td>
 									<td><c:out value="${consulta.paciente.convenio.nome }" /></td>
-									<td><fmt:formatDate pattern="dd-MM-yyy" value="${consulta.data}" /></td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${consulta.data}" /></td>
 									<td><a href="ConsultaController?action=edit&id=<c:out value="${consulta.id}"/>">Editar</a></td>
 		                    		<td><a href="ConsultaController?action=delete&id=<c:out value="${consulta.id}"/>">Deletar</a></td>
 								</tr>

@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.com.unicarioca.agenda.model.Consulta;
@@ -21,15 +24,14 @@ public class ConsultaDAO {
 		conexao = DbUtil.getConnection();
 	}
 	
-	public void adicionaConsulta(Consulta consulta, Medico medico, Paciente paciente) {
+	public void adicionaConsulta(Consulta consulta) {
 		try {
             PreparedStatement preparedStatement = (PreparedStatement) conexao.prepareStatement("insert into consulta(id_medico,id_paciente,data) values (?, ?, ?)");
             // Parameters start with 1
-            preparedStatement.setInt(1, medico.getId());
-            preparedStatement.setInt(2, paciente.getId());
-            java.util.Date data = consulta.getData();
-            java.sql.Date d = new java.sql.Date(data.getTime());
-            preparedStatement.setDate(3, d);
+            preparedStatement.setInt(1, consulta.getMedico().getId());
+            preparedStatement.setInt(2, consulta.getPaciente().getId());
+            java.sql.Timestamp d = new java.sql.Timestamp(consulta.getData().getTime());
+            preparedStatement.setString(3, d.toString());
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -49,15 +51,14 @@ public class ConsultaDAO {
         }
 	}
 	
-	public void atualizaConsulta(Consulta consulta, Medico medico, Paciente paciente) {
+	public void atualizaConsulta(Consulta consulta) {
 		try {
             PreparedStatement preparedStatement = (PreparedStatement) conexao.prepareStatement("update consulta set id_medico=?, id_paciente=?, data=?" + "where id=?");
             // Parameters start with 1
-            preparedStatement.setInt(1, medico.getId());
-            preparedStatement.setInt(2, paciente.getId());
-            java.util.Date data = consulta.getData();
-            java.sql.Date d = new java.sql.Date(data.getTime());
-            preparedStatement.setDate(3, d);
+            preparedStatement.setInt(1, consulta.getMedico().getId());
+            preparedStatement.setInt(2, consulta.getPaciente().getId());
+            java.sql.Timestamp d = new java.sql.Timestamp(consulta.getData().getTime());
+            preparedStatement.setString(3, d.toString());
             preparedStatement.setInt(4, consulta.getId());
             preparedStatement.executeUpdate();
 
@@ -66,7 +67,7 @@ public class ConsultaDAO {
         }
 	}
 	
-	public Consulta buscaconsultaPorId(int id) {
+	public Consulta buscaconsultaPorId(int id) throws ParseException {
 		Consulta consulta = new Consulta();
 		 try {
 	            PreparedStatement preparedStatement = (PreparedStatement) conexao.prepareStatement("select * from consulta where id=?");
@@ -75,7 +76,8 @@ public class ConsultaDAO {
 
 	            if (rs.next()) {
 	            	consulta.setId(rs.getInt("id"));
-	            	consulta.setData(rs.getDate("data"));
+	            	Date data = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("data"));
+	                consulta.setData(data);
 	            	MedicoDAO medicoDAO = new MedicoDAO();
 	        		Medico medico = new Medico();
 	        		medico = medicoDAO.buscaMedicoPorId(rs.getInt("id_medico"));                
@@ -83,6 +85,8 @@ public class ConsultaDAO {
 	        		PacienteDAO pacienteDAO = new PacienteDAO();
 	        		Paciente paciente = new Paciente(); 
 	        		paciente = pacienteDAO.buscaPacientePorId(rs.getInt("id_paciente"));
+	        		ConvenioDAO convenioDAO = new ConvenioDAO();
+	        		paciente.setConvenio(convenioDAO.buscaConvenioPorPaciente(paciente));
 	                consulta.setPaciente(paciente);
 	         
 	            }
@@ -94,7 +98,7 @@ public class ConsultaDAO {
 		return consulta;
 	}
 	
-	public List<Consulta> listaConsultas(){
+	public List<Consulta> listaConsultas() throws ParseException {
 		List<Consulta> consultas = new ArrayList<Consulta>();
 		MedicoDAO medicoDAO = new MedicoDAO();
 		Medico medico = new Medico();
@@ -114,7 +118,8 @@ public class ConsultaDAO {
                 paciente = pacienteDAO.buscaPacientePorId(rs.getInt("id_paciente"));
                 paciente.setConvenio(convenioDAO.buscaConvenioPorPaciente(paciente));
                 consulta.setPaciente(paciente);
-                consulta.setData(rs.getDate("data"));
+                Date data = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("data"));
+                consulta.setData(data);
                 consultas.add(consulta);
             }
         } catch (SQLException e) {

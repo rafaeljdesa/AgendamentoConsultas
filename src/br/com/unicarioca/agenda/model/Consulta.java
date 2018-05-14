@@ -32,6 +32,7 @@ public class Consulta {
 	public void setData(Date data) {
 		this.data = data;
 	}
+	
 	@Override
 	public String toString() {
 		return "Consulta [id=" + id + ", medico=" + medico + ", paciente=" + paciente + ", data=" + data + ", getId()="
